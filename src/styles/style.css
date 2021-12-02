@@ -1,7 +1,28 @@
 #timer {
-
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%,0);
+    font-family: "Roboto Light", serif;
 }
 
+#start {
+    position: absolute;
+    left: 50%;
+    top: 95%;
+    transform: translate(-50%,-95%);
+    width: 200px;
+    height: 40px;
+    font-size: 24px;
+    font-family: "Roboto Light", serif;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: orange;
+    border: 1px solid black;
+    opacity: 90%;
+}
+#start:hover {
+    opacity: 100%;
+}
 
 #game-field-outer {
     position: absolute;
