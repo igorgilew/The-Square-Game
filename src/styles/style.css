@@ -1,0 +1,26 @@
+#timer {
+
+}
+
+
+#game-field-outer {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 420px;
+    height: 420px;
+    background-color:lightgray;
+    border-radius: 5px;
+}
+
+#game-field {
+    margin: 10px;
+    width: 400px;
+    height: 400px;
+    background-color: lightgray;
+    display: flex;
+    flex-flow: wrap;
+    justify-content: center;
+    gap: 2px;
+}
