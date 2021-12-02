@@ -45,3 +45,21 @@
     justify-content: center;
     gap: 2px;
 }
+
+#current-stat {
+    width: 300px;
+    height: 180px;
+    background: lightgray;
+    border-radius: 10px;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+#player-name {
+    font-family: "Roboto Light", serif;
+
+}
+#scores {
+    font-family: "Roboto Light", serif;
+}

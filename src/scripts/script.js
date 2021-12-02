@@ -1,5 +1,6 @@
 const GAME_FIELD = document.getElementById("game-field");
 const TIME_FIELD = document.getElementById("timer");
+const SCORE_FIELD = document.getElementById("scores");
 const GF_WIDTH = GAME_FIELD.clientWidth;
 const GF_HEIGHT = GAME_FIELD.clientHeight;
 
@@ -17,6 +18,8 @@ let gameState = {
     playerName: 'igor',
     opacity: 30
 }
+
+let isGameStarted = false;
 
 let squareArea = function (squareCount) {
     let gameFieldArea = (GF_HEIGHT-2*Math.sqrt(squareCount)) * (GF_WIDTH-2*Math.sqrt(squareCount));
@@ -37,7 +40,7 @@ let renderGameField = function () {
         square.style.width = `${oneSquareSize}px`;
         square.style.height = `${oneSquareSize}px`;
         square.style.background = squareBackground;
-        if (goalSquare === i + 1) {
+        if (goalSquare === i + 1 && isGameStarted) {
             square.id = 'goal';
             square.style.opacity = `${gameState.opacity}%`;
             square.addEventListener("click", onGoalSquareClick);
@@ -58,6 +61,7 @@ let onGoalSquareClick = function () {
     if (gameState.opacity < 80) {
         gameState.opacity += 5;
     }
+    SCORE_FIELD.innerHTML = `Scores ${gameState.playerScore}`;
     renderGameField();
 }
 
@@ -66,6 +70,7 @@ let onButtonStartClick = function () {
         playerName: gameState.playerName,
         ...INITIAL_STATE
     };
+    isGameStarted = true;
     renderGameField();
     initGameTimer();
     let time = GAME_TIME;
@@ -75,6 +80,7 @@ let onButtonStartClick = function () {
             TIME_FIELD.innerHTML = getTimerString(time);
         } else {
             document.getElementById("goal")?.removeEventListener("click", onGoalSquareClick);
+            isGameStarted = false;
             clearInterval(id);
         }
 
