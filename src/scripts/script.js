@@ -1,6 +1,7 @@
 const GAME_FIELD = document.getElementById("game-field");
 const TIME_FIELD = document.getElementById("timer");
 const SCORE_FIELD = document.getElementById("scores");
+const PLAYER_FIELD = document.getElementById("player-name");
 const GF_WIDTH = GAME_FIELD.clientWidth;
 const GF_HEIGHT = GAME_FIELD.clientHeight;
 
@@ -62,6 +63,7 @@ let onGoalSquareClick = function () {
         gameState.opacity += 5;
     }
     SCORE_FIELD.innerHTML = `Scores ${gameState.playerScore}`;
+    saveToLocalStorage();
     renderGameField();
 }
 
@@ -103,7 +105,26 @@ let getRandomColor = function () {
     return '#' + Math.floor(Math.random()* (256 * 256 * 256)).toString(16).padStart(6, '0');
 }
 
+let loadFromLocalStorage = function () {
+    gameState = JSON.parse(localStorage.getItem("gameState")) || {
+        playerName: gameState.playerName,
+        ...INITIAL_STATE
+    };
+}
+
+let saveToLocalStorage = function () {
+    localStorage.setItem("gameState", JSON.stringify(gameState));
+}
+
+let initStatistic = function () {
+    PLAYER_FIELD.innerHTML = `Player: ${gameState.playerName}`;
+    SCORE_FIELD.innerHTML = `Scores ${gameState.playerScore}`;
+}
+
 window.onload = function () {
+    loadFromLocalStorage();
+
+    initStatistic();
     initGameTimer();
     renderGameField();
 }
