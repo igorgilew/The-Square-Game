@@ -3,12 +3,19 @@ const TIME_FIELD = document.getElementById("timer");
 const GF_WIDTH = GAME_FIELD.clientWidth;
 const GF_HEIGHT = GAME_FIELD.clientHeight;
 
-const GAME_TIME = 10; //seconds
+const GAME_TIME = 20; //seconds
+
+const INITIAL_STATE = {
+    playerScore: 0,
+    level: 1,
+    opacity: 30
+}
 
 let gameState = {
     playerScore: 0,
     level: 2,
-    playerName: ''
+    playerName: 'igor',
+    opacity: 30
 }
 
 let squareArea = function (squareCount) {
@@ -17,27 +24,58 @@ let squareArea = function (squareCount) {
 }
 
 let renderGameField = function () {
+    clearGameField();
     let squareCount = (gameState.level + 1) ** 2;
     let oneSquareSize = Math.sqrt(squareArea(squareCount));
+
+    let squareBackground = getRandomColor();
+
+    let goalSquare = Math.floor(Math.random() * squareCount + 1);
 
     for (let i = 0; i < squareCount; i++) {
         let square = document.createElement("div");
         square.style.width = `${oneSquareSize}px`;
         square.style.height = `${oneSquareSize}px`;
-        square.style.background = 'gray';
+        square.style.background = squareBackground;
+        if (goalSquare === i + 1) {
+            square.id = 'goal';
+            square.style.opacity = `${gameState.opacity}%`;
+            square.addEventListener("click", onGoalSquareClick);
+        }
         GAME_FIELD.appendChild(square);
     }
 }
 
+let clearGameField = function () {
+    while (GAME_FIELD.firstChild) {
+        GAME_FIELD.firstChild.remove();
+    }
+}
+
+let onGoalSquareClick = function () {
+    gameState.level++;
+    gameState.playerScore += 100;
+    if (gameState.opacity < 80) {
+        gameState.opacity += 5;
+    }
+    renderGameField();
+}
+
 let onButtonStartClick = function () {
+    gameState = {
+        playerName: gameState.playerName,
+        ...INITIAL_STATE
+    };
+    renderGameField();
     initGameTimer();
     let time = GAME_TIME;
-    setInterval(()=>{
+    let id = setInterval(()=>{
         if (time > 0) {
             time--;
             TIME_FIELD.innerHTML = getTimerString(time);
         } else {
-            clearInterval();
+            document.getElementById("goal")?.removeEventListener("click", onGoalSquareClick);
+            clearInterval(id);
         }
 
     }, 1000);
@@ -52,6 +90,11 @@ let getTimerString = function (time) {
 
 let initGameTimer = function () {
     TIME_FIELD.innerHTML = getTimerString(GAME_TIME);
+}
+
+let getRandomColor = function () {
+    //https://dev.to/akhil_001/generating-random-color-with-single-line-of-js-code-fhj
+    return '#' + Math.floor(Math.random()* (256 * 256 * 256)).toString(16).padStart(6, '0');
 }
 
 window.onload = function () {
